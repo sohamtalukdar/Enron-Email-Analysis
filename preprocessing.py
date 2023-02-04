@@ -3,6 +3,7 @@ from libraries import *
 class Preprocessor:
 
     def __init__(self):
+        self.df = None  
         self.labels = {
             "1": "Company Business, Strategy, etc.",
             "2": "Purely Personal",
@@ -16,6 +17,7 @@ class Preprocessor:
         self.root_directory = 'enron_with_categories'
 
     def preprocess_data(self):
+        self.df = None
         rows = []
 
         for folder_name in os.listdir(self.root_directory):
@@ -32,22 +34,22 @@ class Preprocessor:
 
         df = pd.DataFrame(rows)
         # Drop rows with "Empty message (due to missing attachment)" or "Empty message" labels
-        df = df[df['Label'] != 'Empty message (due to missing attachment)']
-        df = df[df['Label'] != 'Empty message']
+        self.df = self.df[self.df['Label'] != 'Empty message (due to missing attachment)']
+        self.df = self.df[self.df['Label'] != 'Empty message']
 
         # Drop rows with empty Message column
-        df = df.dropna(subset=['Message'])
-        df = df[df['Message'] != '']
+        self.df = self.df.dropna(subset=['Message'])
+        self.df = self.df[self.df['Message'] != '']
 
         # Remove duplicates
-        df.drop_duplicates(inplace=True)
+        self.df.drop_duplicates(inplace=True)
 
         # Clean the email message
-        df['Message'] = df['Message'].apply(lambda x: re.sub(r'[^\w\s]|\d', '', x).lower())
-        df['Message'] = df['Message'].apply(lambda x: re.sub(r'\S+@\S+', '', x))
-        df['Message'] = df['Message'].apply(lambda x: re.sub(r'http\S+', '', x))
-        df['Message'] = df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
-        df['Message'] = df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'[^\w\s]|\d', '', x).lower())
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'\S+@\S+', '', x))
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'http\S+', '', x))
+        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
+        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
 
-        return df
+        return self.df
 
