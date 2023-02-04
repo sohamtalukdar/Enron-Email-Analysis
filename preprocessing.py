@@ -37,6 +37,7 @@ class Preprocessor:
         self.df = self.df[self.df['Label'] != 'Empty message']
 
         # Drop rows with empty Message column
+        self.df = self.df.dropna(subset=['Message'])
         self.df = self.df[self.df['Message'] != '']
 
         # Remove duplicates
