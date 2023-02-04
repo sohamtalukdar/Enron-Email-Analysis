@@ -1,4 +1,7 @@
+df = None
 def preprocess_data():
+
+    global df 
 
     #Map folder names to label values
     labels = {
