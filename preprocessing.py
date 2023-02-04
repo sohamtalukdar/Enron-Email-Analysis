@@ -52,5 +52,6 @@ class Preprocessor:
         self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
 
     def get_dataframe(self):
-        
+
+        return self.df
 
