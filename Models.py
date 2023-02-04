@@ -1,11 +1,8 @@
 from libraries import *
 import preprocessing 
 
-X_train, X_test, y_train, y_test = load_data()
-
-X_train_processed, X_test_processed, y_train_processed, y_test_processed = preprocessing.process_data(X_train, X_test, y_train, y_test)
-
-
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, df['Label'], test_size=0.2, random_state=0)
 
 """
 Naive Bayes
