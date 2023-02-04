@@ -17,7 +17,7 @@ class Preprocessor:
         self.root_directory = 'enron_with_categories'
 
     def preprocess_data(self):
-        self.df = None
+        df = None
         rows = []
 
         for folder_name in os.listdir(self.root_directory):
