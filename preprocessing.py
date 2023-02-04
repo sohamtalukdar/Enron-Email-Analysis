@@ -32,7 +32,7 @@ class Preprocessor:
                             number = int(filename.split(".")[0])
                             rows.append({"#": number, "Label": label, "Message": message_body})
 
-        df = pd.DataFrame(rows)
+        self.df = pd.DataFrame(rows)
         # Drop rows with "Empty message (due to missing attachment)" or "Empty message" labels
         self.df = self.df[self.df['Label'] != 'Empty message (due to missing attachment)']
         self.df = self.df[self.df['Label'] != 'Empty message']
