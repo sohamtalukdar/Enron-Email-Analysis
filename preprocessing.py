@@ -12,7 +12,7 @@ def preprocess_data():
         "8": "Empty message"
     }
 
-    root_directory = '/content/drive/MyDrive/maildir/enron_with_categories/'
+    root_directory = 'enron_with_categories'
     rows = []
 
     for folder_name in os.listdir(root_directory):
@@ -60,6 +60,16 @@ def preprocess_data():
         return " ".join(tokens)
     df['Message'] = df['Message'].apply(lambda x: clean_text(x))
 
-
-
     return preprocess_data
+
+
+        # Vectorization
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(df['Message'])
+
+    # Normalization
+    scaler = StandardScaler(with_mean=False)
+    X = scaler.fit_transform(X)
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, df['Label'], test_size=0.2, random_state=0)
