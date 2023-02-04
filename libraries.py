@@ -21,5 +21,5 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
-# import gensim
-# from gensim.models import Word2Vec
+import gensim
+from gensim.models import Word2Vec
