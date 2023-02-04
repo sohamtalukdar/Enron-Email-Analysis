@@ -51,5 +51,6 @@ class Preprocessor:
         self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
         self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
 
-        return self.df
+    def get_dataframe(self):
+        
 
