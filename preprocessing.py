@@ -50,10 +50,6 @@ class Preprocessor:
 
         # Remove duplicates
         self.df.drop_duplicates(inplace=True)
-
-    def display(self):
-        return self.df
-
         
     def get_dataframe(self):
 
