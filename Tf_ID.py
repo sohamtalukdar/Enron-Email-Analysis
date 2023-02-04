@@ -1,5 +1,11 @@
 from libraries import *
-import preprocessing
+import preprocessing 
+
+X_train, X_test, y_train, y_test = load_data()
+
+X_train_processed, X_test_processed, y_train_processed, y_test_processed = preprocessing.process_data(X_train, X_test, y_train, y_test)
+
+
 
 """
 Naive Bayes

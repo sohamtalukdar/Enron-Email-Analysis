@@ -1,4 +1,4 @@
-def preprocess_data():
+def preprocess_data(X_train, X_test, y_train, y_test):
 
     #Map folder names to label values
     labels = {
@@ -60,10 +60,8 @@ def preprocess_data():
         return " ".join(tokens)
     df['Message'] = df['Message'].apply(lambda x: clean_text(x))
 
-    return preprocess_data
-
-
-        # Vectorization
+    
+    # Vectorization
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(df['Message'])
 
@@ -73,3 +71,8 @@ def preprocess_data():
 
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, df['Label'], test_size=0.2, random_state=0)
+
+    return preprocess_data(X_train_processed, X_test_processed, y_train_processed, y_test_processed)
+
+
+     
