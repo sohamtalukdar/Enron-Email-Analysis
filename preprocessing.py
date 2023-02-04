@@ -32,6 +32,14 @@ class Preprocessor:
                             rows.append({"#": number, "Label": label, "Message": message_body})
 
         self.df = pd.DataFrame(rows)
+
+        # Clean the email message
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'[^\w\s]|\d', '', x).lower())
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'\S+@\S+', '', x))
+        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'http\S+', '', x))
+        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
+        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
+
         # Drop rows with "Empty message (due to missing attachment)" or "Empty message" labels
         self.df = self.df[self.df['Label'] != 'Empty message (due to missing attachment)']
         self.df = self.df[self.df['Label'] != 'Empty message']
@@ -43,14 +51,12 @@ class Preprocessor:
         # Remove duplicates
         self.df.drop_duplicates(inplace=True)
 
-        # Clean the email message
-        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'[^\w\s]|\d', '', x).lower())
-        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'\S+@\S+', '', x))
-        self.df['Message'] = self.df['Message'].apply(lambda x: re.sub(r'http\S+', '', x))
-        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
-        self.df['Message'] = self.df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
+    def display(self):
+        return self.df
 
+        
     def get_dataframe(self):
 
         return self.df
+
 

@@ -3,9 +3,10 @@ from preprocessing import Preprocessor
 
 if __name__ == "__main__":
 
-    proc = Preprocessor()
-    proc.preprocess_data()
-    df_model = proc.get_dataframe()
+    preprocess = Preprocessor()
+    preprocess.preprocess_data()
+    display_df = preprocess.display()
+    df_model = preprocess.get_dataframe()
 
     # Vectorization
     vectorizer = TfidfVectorizer()
