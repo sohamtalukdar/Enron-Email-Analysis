@@ -1,7 +1,7 @@
 from libraries import *
 import preprocessing 
 
-df_model = preprocessing.df
+df_model = preprocessing.preprocess_data()
 # Vectorization
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(df_model['Message'])

@@ -40,24 +40,11 @@ def preprocess_data():
     df.drop_duplicates(inplace=True)
 
     # Clean the email message
-    def clean_text(text):
-        # Remove special characters and digits
-        text = re.sub(r'[^\w\s]|\d', '', text)
-        text = text.lower()
-        # Remove email addresses
-        text = re.sub(r'\S+@\S+', '', text)
-        # Remove URLs
-        text = re.sub(r'http\S+', '', text)
-        tokens = word_tokenize(text)
-        # Stem the words
-        # Initialize the stemmer
-        stemmer = SnowballStemmer("english")
-        text = [stemmer.stem(word) for word in tokens]
-        #text = [stemmer.stem(text) for text in text]
-        # Remove punctuation and stop words
-        stop_words = set(stopwords.words("english"))
-        tokens = [word for word in tokens if word.isalpha() and word not in stop_words]
-        return " ".join(tokens)
-    df['Message'] = df['Message'].apply(lambda x: clean_text(x))
+    df['Message'] = df['Message'].apply(lambda x: re.sub(r'[^\w\s]|\d', '', x).lower())
+    df['Message'] = df['Message'].apply(lambda x: re.sub(r'\S+@\S+', '', x))
+    df['Message'] = df['Message'].apply(lambda x: re.sub(r'http\S+', '', x))
+    df['Message'] = df['Message'].apply(lambda x: " ".join([word for word in word_tokenize(x) if word.isalpha() and word not in set(stopwords.words("english"))]))
+    df['Message'] = df['Message'].apply(lambda x: " ".join([SnowballStemmer("english").stem(word) for word in x.split()]))
+
 
     return df
