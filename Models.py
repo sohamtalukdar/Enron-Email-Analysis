@@ -1,8 +1,16 @@
 from libraries import *
 import preprocessing 
 
+df_model = preprocessing.df
+# Vectorization
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(df_model['Message'])
+
+# Normalization
+scaler = StandardScaler(with_mean=False)
+X = scaler.fit_transform(X)
 # Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, df['Label'], test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, df_model['Label'], test_size=0.2, random_state=0)
 
 """
 Naive Bayes
