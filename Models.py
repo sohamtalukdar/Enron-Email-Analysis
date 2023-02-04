@@ -1,7 +1,9 @@
 from libraries import *
-import preprocessing
+from preprocessing import Preprocessor
 
-df_model = preprocessing.preprocess_data()
+proc = Preprocessor()
+proc.preprocess_data()
+df_model = proc.get_dataframe()
 
 # Vectorization
 vectorizer = TfidfVectorizer()
