@@ -28,3 +28,5 @@ models = [
 for model in models:
     print("\n" + model.__class__.__name__ + ":")
     evaluate_model(model, X_train, X_test, y_train, y_test)
+
+
