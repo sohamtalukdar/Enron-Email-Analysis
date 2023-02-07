@@ -78,7 +78,6 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV
 from keras.wrappers.scikit_learn import KerasClassifier
 import numpy as np
-import tensorflow as tf
-# from tensorflow import keras
+#from tensorflow import keras
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import LabelEncoder
