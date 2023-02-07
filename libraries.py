@@ -26,3 +26,6 @@ from gensim.models import Word2Vec
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.neural_network import MLPClassifier
+from keras.wrappers.scikit_learn import KerasClassifier

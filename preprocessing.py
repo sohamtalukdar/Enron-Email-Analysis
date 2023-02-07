@@ -17,6 +17,14 @@ class Preprocessor:
         self.root_directory = 'enron_with_categories'
 
     def preprocess_data(self):
+        """
+        Preprocesses the data by performing the following steps:
+        1. Reads the text files and constructs a DataFrame with '#', 'Label', and 'Message' columns.
+        2. Cleans the 'Message' column by removing punctuation, digits, email addresses, URLs, and stopwords.
+        3. Stems the words in the 'Message' column.
+        4. Drops the rows with empty 'Message' or 'Label' columns, or rows with "Empty message (due to missing attachment)" or "Empty message" labels.
+        5. Removes duplicates.
+        """
         rows = []
 
         for folder_name in os.listdir(self.root_directory):
