@@ -3,6 +3,7 @@
 from libraries import *
 from preprocessing import Preprocessor,TextClassifier
 # Create an instance of the Preprocessor class
+
 preprocessor = Preprocessor()
 preprocessor.preprocess_data()
 df = preprocessor.get_dataframe()
@@ -25,7 +26,7 @@ y_train = le.fit_transform(y_train)
 y_test = le.transform(y_test)
 
 #Convert text data to numerical format using one-hot encoding
-tokenizer = keras.preprocessing.text.Tokenizer(num_words=1000)
+tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=1000)
 tokenizer.fit_on_texts(X_train)
 X_train = tokenizer.texts_to_matrix(X_train)
 X_test = tokenizer.texts_to_matrix(X_test)
