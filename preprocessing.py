@@ -91,7 +91,7 @@ class TextClassifier:
             vectors[i] = word_vectors
         return vectors
 
-    def grid_search(self, gridsearch):
+    def do_grid_search(self, gridsearch):
         train_vectors = self.get_average_word_vectors(self.train_messages)
         gridsearch.fit(train_vectors, self.train_labels)
         return
