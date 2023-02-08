@@ -64,8 +64,6 @@ class Preprocessor:
         return self.df
 
 
-
-
 class TextClassifier:
     def __init__(self, preprocessor, sg=0, window=5, min_count=1, negative=10, seed=0):
         self.preprocessor = preprocessor
@@ -91,11 +89,6 @@ class TextClassifier:
             vectors[i] = word_vectors
         return vectors
 
-    def grid_search(self, gridsearch):
-        train_vectors = self.get_average_word_vectors(self.train_messages)
-        gridsearch.fit(train_vectors, self.train_labels)
-        return
-
     
     def train_and_evaluate(self, classifier):
         train_vectors = self.get_average_word_vectors(self.train_messages)
@@ -103,9 +96,6 @@ class TextClassifier:
 
         test_vectors = self.get_average_word_vectors(self.test_messages)
         predictions = classifier.predict(test_vectors)
-
-    
-
 
         accuracy = accuracy_score(self.test_labels, predictions)
         precision = precision_score(self.test_labels, predictions, average='weighted', zero_division=0)
