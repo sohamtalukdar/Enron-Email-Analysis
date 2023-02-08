@@ -4,6 +4,7 @@ from preprocessing import Preprocessor,TextClassifier
 # Create an instance of the Preprocessor class
 preprocessor = Preprocessor()
 preprocessor.preprocess_data()
+df = preprocessor.get_dataframe()
 
 # Create an instance of the TextClassifier class
 tc = TextClassifier(preprocessor)
@@ -11,46 +12,61 @@ tc = TextClassifier(preprocessor)
 # Split the data into training and testing sets
 tc.split_data()
 
+# Get the messages as a list of lists of words
+# Convert the messages column of the dataframe to a list of lists of words
+messages = df['Message'].apply(lambda x: x.split()).tolist()
 
-class TextClassifier:
-    def __init__(self, preprocessor, sg=0, window=5, min_count=1, negative=10, seed=0):
-        self.preprocessor = preprocessor
-        self.df = preprocessor.get_dataframe()
-        self.messages = self.df['Message'].apply(lambda x: x.split()).tolist()
-        self.model = Word2Vec(self.messages, sg=sg, window=window, min_count=min_count, negative=negative, seed=seed)
+# Train the CBOW word2vec model
+# Initialize the CBOW Word2Vec model with the following parameters:
+# sg=1 for using the skip-gram architecture
+# window=5 for the size of the sliding window 
+# min_count=1 to consider words that appear only once
+# negative=10 for the number of negative samples to be used during training
+# seed=0 for the random seed
+model = Word2Vec(messages, sg=0, window=5, min_count=1, negative=10, seed=0)
 
-    def split_data(self, test_size=0.2, random_state=0):
-        self.train_df, self.test_df = train_test_split(self.df, test_size=test_size, random_state=random_state)
-        self.train_labels = self.train_df['Label'].tolist()
-        self.train_messages = self.train_df['Message'].apply(lambda x: x.split()).tolist()
-        self.test_labels = self.test_df['Label'].tolist()
-        self.test_messages = self.test_df['Message'].apply(lambda x: x.split()).tolist()
+# Split the data into train and test sets
+# Split the dataframe into a train set and a test set, using a test size of 0.2 and a random seed of 0
+train_df, test_df = train_test_split(df, test_size=0.2, random_state=0)
 
-    def get_average_word_vectors(self, messages):
-        vectors = np.zeros((len(messages), 100))
-        for i, message in enumerate(messages):
-            word_vectors = np.zeros((100,))
-            for word in message:
-                if word in self.model.wv:
-                    word_vectors += self.model.wv[word]
-            word_vectors = word_vectors / len(message)
-            vectors[i] = word_vectors
-        return vectors
+# Get the train and test labels and messages
+# Get the list of labels and messages from the train and test sets, respectively
+train_labels = train_df['Label'].tolist()
+train_messages = train_df['Message'].apply(lambda x: x.split()).tolist()
+test_labels = test_df['Label'].tolist()
+test_messages = test_df['Message'].apply(lambda x: x.split()).tolist()
 
-    def grid_search(self, gridsearch):
-        train_vectors = self.get_average_word_vectors(self.train_messages)
-        gridsearch.fit(train_vectors, self.train_labels)
-        return
+# Convert the messages to average word vectors
+# Initialize an array to store the average word vectors for the train messages
+train_vectors = np.zeros((len(train_messages), 100))
 
+# Loop through the train messages, calculate the average word vectors for each message
+for i, message in enumerate(train_messages):
+    # Initialize an array to store the word vectors for each word in the current message
+    vectors = np.zeros((100,))
     
-    def train_and_evaluate(self, classifier):
-        train_vectors = self.get_average_word_vectors(self.train_messages)
-        classifier.fit(train_vectors, self.train_labels)
+    # Loop through each word in the current message
+    for word in message:
+        # If the word is in the vocabulary of the word2vec model
+        if word in model.wv:
+            # Add the word vector to the sum of word vectors for the current message
+            vectors += model.wv[word]
+    
+    # Divide the sum of word vectors by the number of words in the message to get the average word vector
+    vectors = vectors / len(message)
+    # Store the average word vector for the current message in the train_vectors array
+    train_vectors[i] = vectors
 
-        test_vectors = self.get_average_word_vectors(self.test_messages)
-        predictions = classifier.predict(test_vectors)
+# Repeat the process for the test messages
+test_vectors = np.zeros((len(test_messages), 100))
+for i, message in enumerate(test_messages):
+    vectors = np.zeros((100,))
+    for word in message:
+        if word in model.wv:
+            vectors += model.wv[word]
+    vectors = vectors / len(message)
+    test_vectors[i] = vectors
 
- 
 
 # Define the hyperparameter search space
 param_grid = {'hidden_layer_sizes': [(50,), (100,), (150,)],
