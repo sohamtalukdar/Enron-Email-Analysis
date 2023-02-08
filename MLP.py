@@ -19,33 +19,26 @@ param_grid = {'hidden_layer_sizes': [(50,), (100,), (150,)],
               'alpha': [0.0001, 0.001, 0.01]}
 
 # Create the grid search object
-find_Gridsearch = GridSearchCV(MLPClassifier(max_iter=100), param_grid, cv=5)
+grid_search = GridSearchCV(MLPClassifier(max_iter=100), param_grid, cv=5)
 
 # Fit the grid search to the training data
-#gridSearch.fit(train_vectors, tc.train_labels)
-gridSearchCV = tc.do_grid_search(find_Gridsearch)
+grid_search.fit(train_vectors, train_labels)
+
 # Get the best set of hyperparameters
-best_params = gridSearchCV.best_params_
+best_params = grid_search.best_params_
 
- # Train a classifier with the best hyperparameters
-MLP =  MLPClassifier(max_iter=100, **best_params)
+# Train a classifier with the best hyperparameters
+classifier = MLPClassifier(max_iter=100, **best_params)
+classifier.fit(train_vectors, train_labels)
 
- # Evaluate the model
+# Predict the labels for the test data
+predictions = classifier.predict(test_vectors)
 
-tc.train_and_evaluate(MLP)
+# Evaluate the model using metrics such as accuracy, precision, recall, and F1-score
+accuracy = accuracy_score(test_labels, predictions)
+precision = precision_score(test_labels, predictions, average='weighted', zero_division=0)
+recall = recall_score(test_labels, predictions, average='weighted')
 
-# # Train a classifier with the best hyperparameters
-# classifier = MLPClassifier(max_iter=100, **best_params)
-# classifier.fit(train_vectors, train_labels)
-
-#Predict the labels for the test data
-#predictions = classifier.predict(test_vectors)
-
-# # Evaluate the model using metrics such as accuracy, precision, recall, and F1-score
-# accuracy = accuracy_score(test_labels, predictions)
-# precision = precision_score(test_labels, predictions, average='weighted', zero_division=0)
-# recall = recall_score(test_labels, predictions, average='weighted')
-
-# print("Accuracy:", accuracy)
-# print("Precision:", precision)
-# print("Recall:", recall)
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
