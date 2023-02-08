@@ -1,4 +1,3 @@
-##### MLP
 from libraries import *
 from preprocessing import Preprocessor,TextClassifier
 
