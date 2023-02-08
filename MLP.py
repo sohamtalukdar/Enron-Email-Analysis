@@ -1,5 +1,5 @@
 from libraries import *
-from preprocessing import Preprocessor,TextClassifier
+from preprocessing import Preprocessor
 
 # Create an instance of the Preprocessor class
 preprocessor = Preprocessor()
