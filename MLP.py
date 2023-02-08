@@ -22,10 +22,10 @@ param_grid = {'hidden_layer_sizes': [(50,), (100,), (150,)],
 gridSearch = GridSearchCV(MLPClassifier(max_iter=100), param_grid, cv=5)
 
 # Fit the grid search to the training data
-# grid_search.fit(train_vectors, tc.train_labels)
-gridSearchCV = tc.grid_search(gridSearch)
+gridSearch.fit(train_vectors, tc.train_labels)
+#gridSearchCV = tc.grid_search(gridSearch)
 # Get the best set of hyperparameters
-best_params = gridSearchCV.best_params_
+best_params = gridSearch.best_params_
 
  # Train a classifier with the best hyperparameters
 MLP =  MLPClassifier(max_iter=100, **best_params)
